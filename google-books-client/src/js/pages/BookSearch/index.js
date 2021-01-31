@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import api from '../../api';
 import Styles from './index.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Book({
   volumeInfo,
 }) {
   return (
     <div className={Styles.Book}>
-      Um livro
+      <div className={Styles.BookDetails}>
+        <p><b>Título:</b></p>
+        {volumeInfo.title}
+        <p><b>Autores:</b></p>
+        {volumeInfo.authors.map((author, idx) => <p key={idx}>{author}</p>)}
+      </div>
+      <section className={Styles.BookDescription}>
+        {volumeInfo.description || ' - '}
+      </section>
+      <img src={volumeInfo.imageLinks.smallThumbnail} />
     </div>
   )
 }
@@ -16,7 +26,7 @@ function BookList({ books }) {
   if (!books) return null;
   return (
     <div className={Styles.BookList}>
-      {books.map(Book)}
+      {books.map((book, idx) => <Book key={idx} {...book} />)}
     </div>
   )
 }
