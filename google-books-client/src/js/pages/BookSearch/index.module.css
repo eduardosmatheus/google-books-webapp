@@ -4,3 +4,23 @@
   align-items: center;
   height: 100%;
 }
+
+.BookList {
+  padding: 10px;
+  border: 1px solid black;
+  height: 50vh;
+  width: 50%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.Book {
+  width: 100%;
+  height: 100px;
+  padding: 20px;
+  border: 1px solid grey;;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
