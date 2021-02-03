@@ -1,5 +1,9 @@
 import books from './books';
+import bookmarks from './bookmarks';
 
-export default {
-  books
+const appAPI = {
+  books,
+  bookmarks
 };
+
+export default appAPI;
