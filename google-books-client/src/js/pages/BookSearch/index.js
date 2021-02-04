@@ -1,69 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faSpinner, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faSearch } from '@fortawesome/free-solid-svg-icons';
 import api from '../../api';
 import Styles from './index.module.css';
-
-function Book({
-  bookmarked,
-  volumeInfo,
-  onAddBookmark,
-  onRemoveBookmark,
-  ...rest
-}) {
-  const { title, authors, description, imageLinks } = volumeInfo
-  return (
-    <div className={Styles.Book}>
-      <div className={Styles.BookDetails}>
-        <p><b>Título:</b></p>
-        {title}
-        <p><b>Autores:</b></p>
-        {authors && authors.map((author, idx) => <p key={idx}>{author}</p>)}
-      </div>
-      <section className={Styles.BookDescription}>
-        {description || ' - '}
-      </section>
-      <img src={imageLinks.smallThumbnail} alt={title} />
-      <button
-        onClick={() =>
-          bookmarked ?
-          onRemoveBookmark(rest.id)
-          : onAddBookmark({ volumeInfo, ...rest })
-        }
-      >
-        <FontAwesomeIcon
-          icon={faStar}
-          color={bookmarked ? 'yellow' : 'black'}
-          border
-        />
-      </button>
-    </div>
-  )
-}
-
-export function BookList({
-  books,
-  onAddBookmark,
-  onRemoveBookmark,
-  checkBookmark,
-}) {
-  if (!books) return null;
-  return (
-    <div className={Styles.BookList}>
-      {books.map((book, idx) => (
-        <Book
-          key={idx}
-          bookmarked={checkBookmark && checkBookmark(book)}
-          {...{
-            ...book,
-            onAddBookmark,
-            onRemoveBookmark,
-          }}
-        />
-      ))}
-    </div>
-  )
-}
+import BookList from '../../components/BookList';
 
 export default function BookSearch() {
   const [searchHint, setSearchHint] = useState('');
@@ -113,6 +53,7 @@ export default function BookSearch() {
             icon={isLoading ? faSpinner : faSearch}
             spin={isLoading}
           />
+          {' '}
           Pesquisar
         </button>
       </form>

@@ -1,0 +1,25 @@
+
+.Book {
+  width: 90%;
+  padding: 20px;
+  margin: 10px 0;
+  border: 1px solid grey;;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.BookDetails {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.BookDescription {
+  width: 40%;
+  font-size: 0.8em;
+  overflow: hidden;
+  white-space: pre-wrap;
+  text-overflow: ellipsis;
+  text-align: justify;
+}
