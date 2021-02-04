@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faSpinner, faSearch } from '@fortawesome/free-solid-svg-icons';
 import api from '../../api';
 import Styles from './index.module.css';
 
 function Book({
+  bookmarked,
   volumeInfo,
   onAddBookmark,
   onRemoveBookmark,
@@ -23,10 +24,16 @@ function Book({
         {description || ' - '}
       </section>
       <img src={imageLinks.smallThumbnail} alt={title} />
-      <button onClick={() => onAddBookmark({ volumeInfo, ...rest })}>
+      <button
+        onClick={() =>
+          bookmarked ?
+          onRemoveBookmark(rest.id)
+          : onAddBookmark({ volumeInfo, ...rest })
+        }
+      >
         <FontAwesomeIcon
           icon={faStar}
-          color="yellow"
+          color={bookmarked ? 'yellow' : 'black'}
           border
         />
       </button>
@@ -34,17 +41,23 @@ function Book({
   )
 }
 
-function BookList({ books, onAddBookmark, onRemoveBookmark }) {
+export function BookList({
+  books,
+  onAddBookmark,
+  onRemoveBookmark,
+  checkBookmark,
+}) {
   if (!books) return null;
   return (
     <div className={Styles.BookList}>
       {books.map((book, idx) => (
         <Book
           key={idx}
+          bookmarked={checkBookmark && checkBookmark(book)}
           {...{
             ...book,
             onAddBookmark,
-            onRemoveBookmark
+            onRemoveBookmark,
           }}
         />
       ))}
@@ -56,6 +69,12 @@ export default function BookSearch() {
   const [searchHint, setSearchHint] = useState('');
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    const data = api.bookmarks.list();
+    setBookmarks(data);
+  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -67,15 +86,21 @@ export default function BookSearch() {
 
   const handleAddBookmark = (book) => {
     api.bookmarks.add(book);
+    setBookmarks(api.bookmarks.list());
   };
 
   const handleRemoveBookmark = (book) => {
     api.bookmarks.remove(book);
-  }
+    setBookmarks(api.bookmarks.list());
+  };
+
+  const checkBookmark = (book) => {
+    return bookmarks.find(b => b.id === book.id);
+  };
 
   return (
     <div className={Styles.BookSearch}>
-      <form onSubmit={handleSearch}>
+      <form className={Styles.SearchForm} onSubmit={handleSearch}>
         <input
           type="text"
           name="hint"
@@ -95,6 +120,7 @@ export default function BookSearch() {
         books={books}
         onAddBookmark={handleAddBookmark}
         onRemoveBookmark={handleRemoveBookmark}
+        checkBookmark={checkBookmark}
       />
     </div>
   )

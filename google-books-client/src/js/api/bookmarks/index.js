@@ -21,13 +21,9 @@ function add(book) {
 function remove(id) {
   const { bookmarks } = bookmarksDB();
   const updatedBookmarks = bookmarks.filter(book => book.id !== id);
-  localStorage.setItem(FAVORITES_KEY, { bookmarks: updatedBookmarks });
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify({ bookmarks: updatedBookmarks }));
 }
 
-const bookmarksAPI = {
-  list,
-  add,
-  remove,
-};
+const bookmarksAPI = { list, add, remove };
 
 export default bookmarksAPI;

@@ -5,6 +5,10 @@
   height: 100%;
 }
 
+.SearchForm {
+  margin: 20px 0;
+}
+
 .BookList {
   padding: 10px;
   border: 1px solid black;
