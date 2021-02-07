@@ -1,5 +1,5 @@
+import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-import '../css/App.css';
 import BookSearch from './pages/BookSearch';
 import Favorites from './pages/Favorites';
 
